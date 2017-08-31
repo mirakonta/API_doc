@@ -1,0 +1,45 @@
+Для получения текущих показаний необходимо отправить запрос вида 
+\smallskip
+
+\url{stationip:8080/api/report/actual/?serial=serial&mtype=mtype}
+\smallskip
+
+где поле mtype может принимать значения: \textbf{energy} и \textbf{other}. 
+Ответом на параметр \textbf{energy} будут переданы значения энергий по 4 тарифам, суммарные значения энергий и время их измерения в формате:
+
+\bigskip
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+  "modemid": 1892897,
+  "serial": 12194,
+  "timestamp": 1488348070,
+  "meterings":
+  [
+    "1.7": 1590302,
+    "1.7.1": 1202190,
+    "1.7.2": 19001,
+    "1.7.3": 10219,
+    ...
+    "4.7.4": 54742
+  ]
+}
+\end{lstlisting}
+
+Ответом на параметр \textbf{other} будут переданы остальные мгновенные параметры: напряжение сети, ток через ПУ, коэфициент мощности, частота переменного напряжения в сети.
+
+\bigskip
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+  "modem_id": 1892897,
+  "serial": 12194,
+  "meterings": 
+  [
+    "11.7": 12,
+    "12.7": 19,
+    "13.7": 102,
+    "14.7": 54
+  ]
+}
+\end{lstlisting}
