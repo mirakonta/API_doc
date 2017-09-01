@@ -1,0 +1,64 @@
+В этом разделе описаны только вариативные параметры запросов, с учётом того что форматы запросов и ответов описаны в \ref{subsec:common_format}, параметры email и apikey для всех типов запросов одинаковы.
+
+\subsection{Создание/удаление канала}
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+  "module": "channels",
+  "action": "create"/"delete",
+  "http": [<address1>, <address2>, ...],
+  "mqtt": [<queue1>, <queue2>, ...]
+}
+\end{lstlisting}
+
+При этом на сервере RabbitMQ создаются очереди с названиями <email>\textunderscore queue1, <email>\textunderscore queue2 и.т.д. В дальнейшем к этим очередям можно присоединяться, используя логин и пароль юзера на b.waviot.ru для подключения к RabbitMQ.
+
+\subsection{Подписка/отписка канала на сообщения от модема}
+
+Для того, чтобы направить все приходящие от модема или батча модемов сообщения в канал (подписаться на модем), или отписать канал от модема (батча модемов), нужно выполнить запрос вида:
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+  "module": "subscription",
+  "action": "subscribe"/"unsubscribe",
+  "http": {
+    <address1>: {
+      "modems": [<modem1>, <modem2> ...],
+      "batches": [<batch1>, <batch2> ...],
+    }
+    ...
+  },
+  "mqtt": {
+    <queue1>: {
+      "modems": [<modem3>, <modem2> ...],
+      "batches": [<batch1>, <batch5> ...],
+    }
+    ...
+  }
+}
+\end{lstlisting}
+
+
+\subsection{Получение списка каналов и привязанных к ним модемов для данного юзера}
+
+Для получения списка каналов и модемов, на которые они подписаны, нужно выполнить запрос:
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+  "module": "info"
+}
+\end{lstlisting}
+
+\subsection{Отправка сообщения модему}
+
+Для отправки сообщения на модем нужно выполнить запрос вида:
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+  "module": "downlink",
+  "modem_id": <modem_id>,
+  "payload": <payload>
+}
+\end{lstlisting}
+
+где payload - данные передаваемые на модем, в формате шестнадцатеричной строки (до 256 байт), а modem\textunderscore id - номер модема.

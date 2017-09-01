@@ -1,0 +1,52 @@
+\subsection{Общий формат запросов}
+\label{subsec:common_format}
+
+Запросы отправляются в формате json. Любой json запрос к API содержит следующие обязательные параметры:
+
+\bigskip
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+  "module": "modulename",
+  "action": "actionname",
+  "email": "useremail",
+  "apikey": "userapikey"
+}
+\end{lstlisting}
+
+\smallskip
+
+где: \\
+\textbf{module}: название модуля, \\
+\textbf{action}: имя действия, \\
+\textbf{email}: email, являющийся логином пользователя на \url{b.waviot.ru}, \\
+\textbf{apikey}: apikey, ключ авторизации, уникальный для каждого пользователя \\
+
+\smallskip
+
+Ответ будет получен также в формате json и будет иметь 2 обязательных поля: returncode - числовое возвращаемое значение и message - json структура содержащая остальные возвращаемые параметры в зависимости от запроса.
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+  "message": {...},
+  "returncode": <int>
+}
+\end{lstlisting}
+
+\subsection{Через очереди RabbitMQ}
+
+\smallskip
+
+Для отправки json запроса к API запроса через RabbitMQ нужно подсоединиться к брокеру RabbitMQ, расположенному на порту \textbf{5672} сервера, используя логин \textbf{apiuser} и пароль \textbf{apiuser}. Этому пользователю доступна только очередь \textbf{api.requests} на виртуальном хосте \textbf{/api}. Json пакеты запросов нужно отправлять в эту очередь, записанными в виде строки. Для получения ответа используется интерфейс direct-reply-to. Подробное описание direct-reply-to можно найти по адресу \url{https://www.rabbitmq.com/direct-reply-to.html}, пример отправки запроса к API и получения ответа на Python3 по адресу \url{https://github.com/waviot/API_doc/tree/master/Serversoft/rpc_example.py}
+
+\subsection{По http}
+
+Для отправки по http нужно послать POST запрос типа application/json, в теле содержащий json запрос к API на адрес
+
+\smallskip
+
+\url{apisoftip:8080/api/data/}
+
+\smallskip
+
+Ответ будет получен также в виде json страницы
