@@ -1,0 +1,37 @@
+Для отправки команд управления на ПУ необходимо послать запрос вида 
+\smallskip
+
+\url{http://station_ip_address:8080/api/cmd/send/?serial=serial&type=type&value=value} 
+
+\bigskip
+
+Ответом будет передан идентификатор запроса. Пример ответа: 
+
+\bigskip
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+  "cmd_id": 12194
+}
+\end{lstlisting}
+
+После этого можно проверить статус отправки команды, послав запрос на адрес
+
+\smallskip
+
+\url{http://station_ip_address:8080/api/cmd/status/?cmd_id=cmd_id}
+
+\bigskip
+
+Ответом будет передан статус запроса, принимающий одно из трёх значений: DONE, PENDING, FAILED. Пример ответа:
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+  "cmd_id": 12194
+  "status": "PENDING"
+}
+\end{lstlisting}
+
+\subsection{Установка порога мощности для отключения реле}
+
+\textbf{type}=setmaxpower, \textbf{value} - мощность в Вт
