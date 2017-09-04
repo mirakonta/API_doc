@@ -4,7 +4,7 @@ import asyncio
 from threading import Thread
 
 loop = asyncio.get_event_loop()
-credentials = {'username':'apiuser', 'password':'apiuser'}
+credentials = {'username':'apiuser@gmail.com', 'password':'apikey'}
 
 class RPC_API_client(object):
 
